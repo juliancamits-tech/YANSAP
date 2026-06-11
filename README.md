@@ -20,4 +20,4 @@ Orders.Module
 ```
 
 See the Architecture Principles document for full details.
-[Click here](docs/ARCHITECTURE_PRINCIPLES.md)
+[Click here](docs/ARCHITECTURE_PRINCIPLES_ES.md) (Eng version comming soon)

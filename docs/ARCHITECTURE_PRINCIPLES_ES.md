@@ -28,6 +28,8 @@ Los Contratos son nodos hoja en el grafo de dependencias.
 
 ## Módulo
 
+>Un módulo debería representar una capacidad funcional que tendría sentido desplegar, versionar o extraer de forma independiente en el futuro.
+
 Responsabilidades:
 
 - Funcionalidades
@@ -111,6 +113,11 @@ Infrastructure
 |   └─ INotificationService
 |   └─ NotificationService
 ```
+-------------------------------
+#### Tecnicas Avanzadas
+-------------------------------
+
+Seguramente todos los modulos terminen usando el mismo motor de base de datos para persistencia esto podria causar que un modulo a forma de "agilizar" rompa el asilamiento haciendo una query que invada el dominio/tablas de otro modulo. Si deseamos evitar eso lo correcto seria que cada modulo tenga su propio schema de base de datos (que tener una division por schema es barato) y usuarios asigandos especificamente a cada schema para cada modulo.
 
 -------------------------------
 ### Shared
@@ -145,8 +152,16 @@ Como los otros `*.Module` consumen el `*.Module.Contract` no se enteran del camb
 
 Este modulo debe respetar la regla de que todo sea `internal` a excepcion del Boostrap que se ofrece para la aplicacion anfitriona.
 
->[!TIP]
-> Si el equipo es muy maduro en vez de este enfoque pueden optar por sacar Contracts a un paquete nugget y la implementacion a otro paquete eliminando del proyecto el 100% de la informacion del modulo y pasar a ser una caja negra nuggetizada.
+-------------------------------
+### Tecnicas avanzadas
+-------------------------------
+
+Si un equipo es lo suficiento maduro al separar un modulo tanto el `*.Module.Contract` y el `*.Module.Remote` pueden convertirse en un paquete nugget, de esta forma se elimina la referencia completamente del proyecto y la evolucion del paquete nugget esta ligado a la evolucion del proyecto.
+
+Esto tambien permite a que nuevos actores que originalmente no eran parte del proyecto original tambien puedan acceder facilmente a este modulo.
+
+Es importante tambien definir una politica de versionado se recomienda que cuando un contrato tenga cambios que rompan compatibilidad con la version actual la nueva version sea una funciona nueva y la que va a quedar deprecada este marcada con `[Obsolete("...")]` para que los consumidores al actualizar esten al tando del cambio.
+
 
 
 ## Reglas de dependencias
